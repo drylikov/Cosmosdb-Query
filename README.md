@@ -1,4 +1,4 @@
-# cosmosdb-query
+# Cosmosdb-Query
 
 A SQL parser and executer for Cosmos DB.
 

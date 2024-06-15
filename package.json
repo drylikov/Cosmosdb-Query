@@ -1,0 +1,84 @@
+{
+  "name": "@zeit/cosmosdb-query",
+  "version": "0.7.2",
+  "description": "A SQL parser and executer for Cosmos DB",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.js",
+  "repository": "github:zeit/cosmosdb-query",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc && yarn build-parser",
+    "build-parser": "pegjs -o lib/parser.js src/parser.pegjs && cp src/parser.d.ts lib",
+    "format": "prettier --write '{src,test}/**/*.ts'",
+    "format-staged": "git diff --cached --name-only '*.ts' | xargs prettier --list-different",
+    "lint": "eslint --ignore-pattern '*.pegjs' '{src,test}/**/*'",
+    "lint-staged": "git diff --cached --name-only '*.ts' | xargs eslint",
+    "prepublishOnly": "yarn build",
+    "test": "yarn build && best -I 'test/*.ts' -r ts-node/register --verbose"
+  },
+  "dependencies": {
+    "@babel/generator": "7.6.2",
+    "@babel/traverse": "7.6.2",
+    "@turf/turf": "5.1.6",
+    "@turf/nearest-point-to-line": "6.0.0",
+    "@turf/point-to-line-distance": "6.0.0"
+  },
+  "devDependencies": {
+    "@types/babel__generator": "7.6.0",
+    "@types/babel__traverse": "7.0.7",
+    "@types/node": "12.7.9",
+    "@typescript-eslint/eslint-plugin": "2.3.2",
+    "@typescript-eslint/parser": "2.3.2",
+    "@zeit/best": "0.5.3",
+    "@zeit/git-hooks": "0.1.4",
+    "eslint": "6.5.1",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-config-prettier": "6.3.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.15.1",
+    "pegjs": "0.10.0",
+    "prettier": "1.18.2",
+    "ts-node": "8.4.1",
+    "typescript": "3.6.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
+    "rules": {
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allow": [
+            "_rid"
+          ]
+        }
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".ts"
+          ]
+        }
+      }
+    }
+  },
+  "git": {
+    "pre-commit": [
+      "lint-staged",
+      "format-staged"
+    ]
+  }
+}
